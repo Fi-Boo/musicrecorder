@@ -1,4 +1,4 @@
-package com.test.musicrecorder;
+package com.cca2.musicrecorder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
