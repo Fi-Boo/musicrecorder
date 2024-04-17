@@ -9,7 +9,7 @@
     <div class="container">
         <h2>New User Registration</h2>
         <form action="register" method="post">
-            <p th:text="${errorMsg}"></p>
+            <p th:text="${errorMsg}">Error Message</p>
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" value="" required>
