@@ -1,4 +1,4 @@
-package com.cca2.musicrecorder;
+package com.cca2.musiclibrary;
 
 public class User {
 

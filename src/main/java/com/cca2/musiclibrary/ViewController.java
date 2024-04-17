@@ -1,4 +1,4 @@
-package com.cca2.musicrecorder;
+package com.cca2.musiclibrary;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ViewController {
 
-    MusicRecorder mr = new MusicRecorder();
+    MusicLibrary mr = new MusicLibrary();
 
     @RequestMapping("/")
     public String loginPage() {
