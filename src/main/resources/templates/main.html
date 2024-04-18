@@ -18,6 +18,47 @@
     </section>
     <section id="queryArea">
         <h1>Song Search</h1>
+        <form th:action="@{/query}" th:object="${form}" method="post">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" >
+            </div>
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="text" class="form-control" id="year" name="year" >
+            </div>
+            <div class="form-group">
+                <select name="selectedArtist">
+                    <option value="">All Artists</option>
+                    <option th:each="artist : ${artists}" th:value="${artist}" th:text="${artist}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">Query</button>
+            <p th:text="${errorMsg}">Error Message</p>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Artist</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="song : ${queryResults}">
+                    <td th:text="${song.title}"></td>
+                    <td th:text="${song.year}"></td>
+                    <td th:text="${song.artist}"></td>
+                    <td>
+                        <form th:action="@{/subscribe}" method="post">
+                            <input type="hidden" name="subTitle" th:value="${song.title}" readonly>
+                            <button type="submit" class="btn-primary">Subscribe</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
     </section>
 </body>
 </html>

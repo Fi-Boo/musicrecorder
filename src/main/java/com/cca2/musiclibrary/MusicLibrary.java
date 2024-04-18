@@ -1,7 +1,13 @@
 package com.cca2.musiclibrary;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.io.IOException;
+import java.text.Collator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
@@ -10,6 +16,9 @@ public class MusicLibrary {
 
     ArrayList<User> users = new ArrayList<User>();
     ArrayList<Song> songs = new ArrayList<Song>();
+    HashSet<String> subscribedSongs = new HashSet<String>();
+
+    DatabaseController dbc;
     User loggedUser;
 
     public MusicLibrary() {
@@ -57,6 +66,7 @@ public class MusicLibrary {
             if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
 
                 loggedUser = user;
+                // subscribedSongs = getSubscrubedSongs(loggedUser.getEmail());
                 userFound = true;
             }
         }
@@ -86,6 +96,49 @@ public class MusicLibrary {
     public void logout() {
 
         loggedUser = null;
+    }
+
+    public Object getArtists() {
+
+        // https://stackoverflow.com/questions/708698/how-can-i-sort-a-list-alphabetically
+        Collection<String> artists = new TreeSet<String>(Collator.getInstance());
+
+        for (Song song : songs) {
+            artists.add(song.getArtist());
+        }
+
+        return artists;
+
+    }
+
+    public List<Song> queryFor(String title, String year, String artist) {
+
+        List<Song> filteredSongs = songs.stream()
+                .filter(song -> title == "" || song.getTitle().contains(title))
+                .filter(song -> year == "" || song.getYear().contains(year))
+                .filter(song -> artist == "" || song.getArtist().contains(artist))
+                .collect(Collectors.toList());
+
+        return filteredSongs;
+
+    }
+
+    public Object getCurrentUser() {
+        return loggedUser.getEmail();
+    }
+
+    public Object getUsernameByEmail(String loggedUserEmail) {
+        for (User user : users) {
+            if (user.getEmail().equalsIgnoreCase(loggedUserEmail)) {
+                return user.getUsername();
+            }
+        }
+        return null;
+    }
+
+    public void addToSubscribeList(String subTitle) {
+
+        subscribedSongs.add(subTitle);
     }
 
 }

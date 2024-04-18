@@ -1,10 +1,17 @@
 package com.cca2.musiclibrary;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.TreeSet;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ViewController {
@@ -17,9 +24,10 @@ public class ViewController {
     }
 
     @PostMapping("/login")
+
     public String processLogin(@RequestParam("email") String email,
             @RequestParam("password") String password,
-            Model model) {
+            Model model, HttpSession session) {
 
         if (mr.checkLogin(email, password) == false) {
 
@@ -29,9 +37,7 @@ public class ViewController {
             return "login";
         } else {
 
-            // Add attributes to pass data to the next page
-            model.addAttribute("username", mr.getUsername());
-
+            session.setAttribute("loggedUserEmail", mr.getCurrentUser());
             // Redirect to a new page
             return "redirect:/main";
 
@@ -40,9 +46,12 @@ public class ViewController {
     }
 
     @RequestMapping("/main")
-    public String welcomePage(Model model) {
+    public String welcomePage(Model model, HttpSession session) {
 
-        model.addAttribute("username", mr.getUsername());
+        String loggedUserEmail = (String) session.getAttribute("loggedUserEmail");
+
+        model.addAttribute("username", mr.getUsernameByEmail(loggedUserEmail));
+        model.addAttribute("artists", mr.getArtists());
 
         return "main";
     }
@@ -80,11 +89,41 @@ public class ViewController {
         return "register";
     }
 
+    @PostMapping("/query")
+    public String query(@RequestParam(required = false) String title, @RequestParam(required = false) String year,
+            @RequestParam(required = false) String selectedArtist, Model model) {
+
+        List<Song> songs = mr.queryFor(title, year, selectedArtist);
+
+        model.addAttribute("username", mr.getUsername());
+        model.addAttribute("artists", mr.getArtists());
+
+        if (songs.size() == 0) {
+
+            String errorMsg = "No match found...";
+            model.addAttribute("errorMsg", errorMsg);
+
+        } else {
+
+            model.addAttribute("queryResults", songs);
+        }
+
+        return "main";
+    }
+
     @PostMapping("/logout")
     public String logout() {
 
         mr.logout();
 
         return "redirect:/";
+    }
+
+    @PostMapping("/subscribe")
+    public String subscribe(@RequestParam("subTitle") String subTitle) {
+
+        mr.addToSubscribeList(subTitle);
+
+        return "main";
     }
 }
