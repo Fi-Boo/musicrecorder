@@ -3,62 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css">
     <title>Main User Page</title>
 </head>
 <body>
+    <div class="mainContainer">
     <section id="userArea">
-        <h1 th:text ="'Welcome ' + ${username}"></h1>
+        <h1 th:text ="'Welcome ' + ${username}">Welcome User</h1>
         <form th:action="@{/logout}" method="post">
-            <button type="submit">Logout</button>
+            <button type="submit" class="btnPrimary">Logout</button>
         </form>
     </section>
     <section id="subscriptionArea">
-        <h1>Subscribed Songs List</h1>
-
+        <h1>Your Subscriptions</h1>
+        <p class="errorMsg" th:text="${errorNoSubMsg}">Error Message</p>
     </section>
     <section id="queryArea">
         <h1>Song Search</h1>
-        <form th:action="@{/query}" th:object="${form}" method="post">
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" >
+        <form class="queryForm" th:action="@{/query}" th:object="${form}" method="post">
+            <div class="formGroup">
+                <input type="text" class="formControl" id="title" name="title" placeholder="Title" >
             </div>
-            <div class="form-group">
-                <label for="year">Year:</label>
-                <input type="text" class="form-control" id="year" name="year" >
+            <div class="formGroup">
+                <input type="text" class="formControl" id="year" name="year" placeholder="Year">
             </div>
-            <div class="form-group">
+            <div class="formGroup">
                 <select name="selectedArtist">
                     <option value="">All Artists</option>
                     <option th:each="artist : ${artists}" th:value="${artist}" th:text="${artist}"></option>
                 </select>
             </div>
-            <button type="submit" class="btn-primary">Query</button>
-            <p th:text="${errorMsg}">Error Message</p>
+            <div class="formGroup">
+                <button type="submit" class="btnPrimary">Query</button>
+            </div>
         </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Year</th>
-                    <th>Artist</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="song : ${queryResults}">
-                    <td th:text="${song.title}"></td>
-                    <td th:text="${song.year}"></td>
-                    <td th:text="${song.artist}"></td>
-                    <td>
+        <table class="listTable">
+
+            <tr th:each="song : ${queryResults}">
+                <div class="songBox">
+                    <div class="artistImg"></div>
+                    <div class="songTitle" th:text="${song.title}"></div>
+                    <div class="songYear" th:text="${song.year}"></div>
+                    <div class="songArtist" th:text="${song.artist}"></div>
+                    <div class="songURL"></div>
+                    <div class="songBtn">
                         <form th:action="@{/subscribe}" method="post">
                             <input type="hidden" name="subTitle" th:value="${song.title}" readonly>
-                            <button type="submit" class="btn-primary">Subscribe</button>
+                            <button type="submit" class="btnPrimary">Subscribe</button>
                         </form>
-                    </td>
-                </tr>
-            </tbody>
+                    </div>
+                </div>
+            </tr> 
         </table>
-
+        <p class="errorMsg" th:text="${errorNoResultMsg}">Error Message</p>
     </section>
+    </div>
 </body>
 </html>
