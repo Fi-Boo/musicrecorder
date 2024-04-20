@@ -48,9 +48,7 @@ public class ViewController {
     @RequestMapping("/main")
     public String welcomePage(Model model, HttpSession session) {
 
-        String loggedUserEmail = (String) session.getAttribute("loggedUserEmail");
-
-        model.addAttribute("username", mr.getUsernameByEmail(loggedUserEmail));
+        model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
 
         return "main";

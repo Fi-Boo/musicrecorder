@@ -23,8 +23,8 @@ public class MusicLibrary {
 
     public MusicLibrary() {
 
-        populateUserList();
         populateSongsList();
+        dbc = new DatabaseController();
 
     }
 
@@ -46,34 +46,21 @@ public class MusicLibrary {
         System.out.println(songs.size() + " songs added to the list");
     }
 
-    private void populateUserList() {
-
-        String name = "phibui";
-        String emailsuffix = "@student.rmit.edu.au";
-        String password = "012345678901234";
-
-        for (int i = 0; i < 10; i++) {
-            users.add(new User(name + i, name + i + emailsuffix, password.substring(0 + i, 6 + i)));
-        }
-    }
-
     public boolean checkLogin(String email, String password) {
 
-        boolean userFound = false;
+        List<User> results = dbc.checkUserByLogin(email, password);
 
-        for (User user : users) {
+        if (results.size() > 0) {
+            loggedUser = results.get(0);
 
-            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
-
-                loggedUser = user;
-                // subscribedSongs = getSubscrubedSongs(loggedUser.getEmail());
-                userFound = true;
-            }
+            System.out.println("Logged user set to: " + loggedUser.getUsername());
+            return true;
+        } else {
+            return false;
         }
-        return userFound;
     }
 
-    public String getUsername() {
+    public String getLoggedUsername() {
         return loggedUser.getUsername();
     }
 
