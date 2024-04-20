@@ -38,9 +38,12 @@
                 <button type="submit" class="btnPrimary">Query</button>
             </div>
         </form>
-        <div th:if="${queryResults != null}">
+        
             <div class="sresults">
                 <h2> Search Results</h2>
+            </div>
+            <div class="sresults">
+                <p th:text="${errorMsg}">
             </div>
             <table class="listTable">
                 <tr th:each="song : ${queryResults}">
@@ -59,7 +62,7 @@
                     </div>
                 </tr> 
             </table>
-        </div>
+        
     </section>
     </div>
 </body>

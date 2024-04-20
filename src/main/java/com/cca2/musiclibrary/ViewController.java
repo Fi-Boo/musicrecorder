@@ -92,7 +92,7 @@ public class ViewController {
 
         if (songs.size() == 0) {
 
-            String errorMsg = "No match found...";
+            String errorMsg = "No result is retrieved. Please query again";
             model.addAttribute("errorMsg", errorMsg);
 
         } else {
