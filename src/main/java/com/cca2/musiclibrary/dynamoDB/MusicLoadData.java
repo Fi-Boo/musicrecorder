@@ -48,17 +48,18 @@ public class MusicLoadData {
 
             String artist = currentNode.path("artist").asText();
             String title = currentNode.path("title").asText();
-            int year = currentNode.path("year").asInt();
+            String year = currentNode.path("year").asText();
             String webURL = currentNode.path("web_url").asText();
             String imageURL = currentNode.path("img_url").asText();
 
             try {
-                table.putItem(new Item().withPrimaryKey("artist", artist, "title", title).withInt("year", year)
-                        .withString("web_url", webURL).withString("image_url", imageURL));
-                System.out.println("PutItem succeeded: " + artist + " " + title);
+                table.putItem(
+                        new Item().withPrimaryKey("title", title).withString("artist", artist).withString("year", year)
+                                .withString("web_url", webURL).withString("image_url", imageURL));
+                System.out.println("PutItem succeeded: " + title + " by " + artist);
 
             } catch (Exception e) {
-                System.err.println("Unable to add movie: " + artist + " " + title);
+                System.err.println("Unable to add song: " + title + " by " + artist);
                 System.err.println(e.getMessage());
                 break;
             }

@@ -22,38 +22,51 @@ public class MusicLibrary {
     User loggedUser;
 
     public MusicLibrary() {
-
-        populateSongsList();
-        dbc = new DatabaseController();
-
     }
 
-    private void populateSongsList() {
+    // private void populateSongsList() {
 
-        ObjectMapper mapper = new ObjectMapper();
+    // ObjectMapper mapper = new ObjectMapper();
 
-        try {
+    // try {
 
-            ClassPathResource resource = new ClassPathResource("a2.json");
-            // Read JSON file and deserialize it into an ArrayList of MyObject
-            SongList songList = mapper.readValue(resource.getInputStream(), SongList.class);
-            songs = songList.getSongs();
+    // ClassPathResource resource = new ClassPathResource("a2.json");
+    // // Read JSON file and deserialize it into an ArrayList of MyObject
+    // SongList songList = mapper.readValue(resource.getInputStream(),
+    // SongList.class);
+    // songs = songList.getSongs();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+
+    // System.out.println(songs.size() + " songs added to the list");
+    // }
+
+    public boolean checkLoginCredentials(String email, String password) {
+
+        dbc = new DatabaseController("login");
+
+        List<User> results = dbc.getDatabaseListByEmail(email);
+
+        if (results.size() > 0 && results.get(0).getPassword().equals(password)) {
+
+            loggedUser = results.get(0);
+            System.out.println("Logged user set to: " + loggedUser.getUsername());
+            return true;
+
+        } else {
+            return false;
         }
-
-        System.out.println(songs.size() + " songs added to the list");
     }
 
-    public boolean checkLogin(String email, String password) {
+    public boolean checkEmailExists(String email) {
 
-        List<User> results = dbc.checkUserByLogin(email, password);
+        dbc = new DatabaseController("login");
+
+        List<User> results = dbc.getDatabaseListByEmail(email);
 
         if (results.size() > 0) {
-            loggedUser = results.get(0);
-
-            System.out.println("Logged user set to: " + loggedUser.getUsername());
             return true;
         } else {
             return false;
@@ -66,18 +79,9 @@ public class MusicLibrary {
 
     public void addUser(String email, String username, String password) {
 
-        users.add(new User(username, email, password));
-    }
+        dbc = new DatabaseController("login");
 
-    public boolean checkEmailExists(String email) {
-
-        for (User user : users) {
-            if (user.getEmail().equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
-
-        return false;
+        dbc.addUserEntry(email, username, password);
     }
 
     public void logout() {
@@ -90,6 +94,8 @@ public class MusicLibrary {
         // https://stackoverflow.com/questions/708698/how-can-i-sort-a-list-alphabetically
         Collection<String> artists = new TreeSet<String>(Collator.getInstance());
 
+        List<Song> songs = queryFor("", "", "");
+
         for (Song song : songs) {
             artists.add(song.getArtist());
         }
@@ -98,29 +104,29 @@ public class MusicLibrary {
 
     }
 
+    // public List<Song> queryFor(String title, String year, String artist) {
+
+    // List<Song> filteredSongs = songs.stream()
+    // .filter(song -> title == "" || song.getTitle().contains(title))
+    // .filter(song -> year == "" || song.getYear().contains(year))
+    // .filter(song -> artist == "" || song.getArtist().contains(artist))
+    // .collect(Collectors.toList());
+
+    // return filteredSongs;
+
+    // }
+
     public List<Song> queryFor(String title, String year, String artist) {
 
-        List<Song> filteredSongs = songs.stream()
-                .filter(song -> title == "" || song.getTitle().contains(title))
-                .filter(song -> year == "" || song.getYear().contains(year))
-                .filter(song -> artist == "" || song.getArtist().contains(artist))
-                .collect(Collectors.toList());
+        dbc = new DatabaseController("music");
 
-        return filteredSongs;
+        List<Song> scanResults = dbc.getSongs(title, year, artist);
 
+        return scanResults;
     }
 
     public Object getCurrentUser() {
         return loggedUser.getEmail();
-    }
-
-    public Object getUsernameByEmail(String loggedUserEmail) {
-        for (User user : users) {
-            if (user.getEmail().equalsIgnoreCase(loggedUserEmail)) {
-                return user.getUsername();
-            }
-        }
-        return null;
     }
 
     public void addToSubscribeList(String subTitle) {

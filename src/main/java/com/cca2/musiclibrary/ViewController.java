@@ -1,17 +1,12 @@
 package com.cca2.musiclibrary;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.TreeSet;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ViewController {
@@ -27,9 +22,9 @@ public class ViewController {
 
     public String processLogin(@RequestParam("email") String email,
             @RequestParam("password") String password,
-            Model model, HttpSession session) {
+            Model model) {
 
-        if (mr.checkLogin(email, password) == false) {
+        if (mr.checkLoginCredentials(email, password) == false) {
 
             String errorMsg = "email or password is invalid";
             model.addAttribute("errorMsg", errorMsg);
@@ -37,7 +32,6 @@ public class ViewController {
             return "login";
         } else {
 
-            session.setAttribute("loggedUserEmail", mr.getCurrentUser());
             // Redirect to a new page
             return "redirect:/main";
 
@@ -46,7 +40,7 @@ public class ViewController {
     }
 
     @RequestMapping("/main")
-    public String welcomePage(Model model, HttpSession session) {
+    public String welcomePage(Model model) {
 
         model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
@@ -93,7 +87,7 @@ public class ViewController {
 
         List<Song> songs = mr.queryFor(title, year, selectedArtist);
 
-        model.addAttribute("username", mr.getUsername());
+        model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
 
         if (songs.size() == 0) {

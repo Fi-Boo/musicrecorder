@@ -35,10 +35,8 @@ public class MusicCreateTable {
                 try {
                         System.out.println("Attempting to create table; please wait...");
                         Table table = dynamoDB.createTable(tableName,
-                                        Arrays.asList(new KeySchemaElement("artist", KeyType.HASH), // Partition key
-                                                        new KeySchemaElement("title", KeyType.RANGE)), // Sort key
-                                        Arrays.asList(new AttributeDefinition("artist", ScalarAttributeType.S),
-                                                        new AttributeDefinition("title", ScalarAttributeType.S)),
+                                        Arrays.asList(new KeySchemaElement("title", KeyType.HASH)), // Partition key
+                                        Arrays.asList(new AttributeDefinition("title", ScalarAttributeType.S)),
                                         new ProvisionedThroughput(10L, 10L));
                         table.waitForActive();
 
