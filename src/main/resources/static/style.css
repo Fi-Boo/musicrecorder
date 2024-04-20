@@ -69,9 +69,9 @@ section {
     width: 95%;
     height: fit-content;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
     grid-template-areas: 
-        "img title title year btn"
+        "img title title  year btn"
         "img artist artist . btn"
         "img url url url .";
 }
@@ -105,4 +105,8 @@ a {
     color: black;
 }
 
-
+.sresults {
+    width: 95%;
+    text-align: center;
+    margin: 1rem 1rem 0;
+}
