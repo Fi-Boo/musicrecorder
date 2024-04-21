@@ -4,6 +4,8 @@ package com.cca2.musiclibrary.dynamoDB;
 
 import java.util.Iterator;
 
+import com.cca2.musiclibrary.StringEditor;
+
 import org.springframework.core.io.ClassPathResource;
 
 import com.amazonaws.client.builder.AwsClientBuilder;
@@ -47,7 +49,7 @@ public class MusicLoadData {
             currentNode = (ObjectNode) iter.next();
 
             String artist = currentNode.path("artist").asText();
-            String title = currentNode.path("title").asText();
+            String title = StringEditor.capitalize(currentNode.path("title").asText());
             String year = currentNode.path("year").asText();
             String webURL = currentNode.path("web_url").asText();
             String imageURL = currentNode.path("img_url").asText();
@@ -66,4 +68,5 @@ public class MusicLoadData {
         }
         parser.close();
     }
+
 }

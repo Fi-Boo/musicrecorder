@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Song {
 
-    String title;
-    String artist;
-    String year;
+    private String title;
+    private String artist;
+    private String year;
     @JsonProperty("web_url")
-    String webUrl;
+    private String webUrl;
     @JsonProperty("img_url")
-    String imgUrl;
+    private String imgUrl;
 
     public Song() {
     }

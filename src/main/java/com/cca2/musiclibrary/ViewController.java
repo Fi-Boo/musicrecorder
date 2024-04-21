@@ -44,6 +44,7 @@ public class ViewController {
 
         model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
+        model.addAttribute("subscriptions", mr.getSubscriptionsByEmail());
 
         return "main";
     }
@@ -89,6 +90,7 @@ public class ViewController {
 
         model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
+        model.addAttribute("subscriptions", mr.getSubscriptionsByEmail());
 
         if (songs.size() == 0) {
 
@@ -112,10 +114,19 @@ public class ViewController {
     }
 
     @PostMapping("/subscribe")
-    public String subscribe(@RequestParam("subTitle") String subTitle) {
+    public String subscribe(@RequestParam("subTitle") String subTitle, Model model) {
 
         mr.addToSubscribeList(subTitle);
 
-        return "main";
+        return "redirect:/main";
     }
+
+    @PostMapping("/removesub")
+    public String unsubscribe(@RequestParam("songTitle") String songTitle, Model model) {
+
+        mr.removeFromSubscribeList(songTitle);
+
+        return "redirect:/main";
+    }
+
 }
