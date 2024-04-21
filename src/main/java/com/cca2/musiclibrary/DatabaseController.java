@@ -283,7 +283,6 @@ public class DatabaseController {
         for (int i = 0; i < subSongs.size(); i++) {
             if (subSongs.get(i).equals(songTitle)) {
                 subSongs.remove(i);
-
             }
         }
 

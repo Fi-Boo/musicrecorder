@@ -57,6 +57,16 @@
 			<version>1.12.546</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>1.12.91</version> <!-- Use the appropriate version -->
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.11.999</version> <!-- Use the appropriate version -->
+		</dependency>
 
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

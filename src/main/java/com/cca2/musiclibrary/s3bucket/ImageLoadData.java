@@ -68,7 +68,7 @@ public class ImageLoadData {
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentType("image/jpeg");
                 metadata.setContentLength(contentLength);
-                metadata.addUserMetadata("artist", "ArcadeFire.jpg");
+                metadata.addUserMetadata("artist", key);
 
                 PutObjectRequest request = new PutObjectRequest(bucketName, key,
                         new ByteArrayInputStream(data), metadata);

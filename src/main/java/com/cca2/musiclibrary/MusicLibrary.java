@@ -1,5 +1,6 @@
 package com.cca2.musiclibrary;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
@@ -144,6 +145,10 @@ public class MusicLibrary {
 
         List<Song> songs = dbc.getSubscriptionsByEmail(loggedUser.getEmail());
 
+        for (Song song : songs) {
+            changeImgURL(song);
+        }
+
         return songs;
 
     }
@@ -158,6 +163,14 @@ public class MusicLibrary {
 
         dbc.removeFromSubscribeList(loggedUser.getEmail(), songTitle);
 
+    }
+
+    private void changeImgURL(Song song) {
+        String urlPrefix = "https://s3.us-east-1.amazonaws.com/cca2.artists/";
+
+        String imageName = song.getImgUrl().substring(87, song.getImgUrl().length());
+
+        song.setImgUrl(urlPrefix + imageName);
     }
 
 }
