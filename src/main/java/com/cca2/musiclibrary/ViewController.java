@@ -46,6 +46,7 @@ public class ViewController {
         model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
         model.addAttribute("subscriptions", mr.getSubscriptionsByEmail());
+        model.addAttribute("artistImg", mr.getArtistImg(mr.getSubscriptionsByEmail()));
 
         return "main";
     }
@@ -92,6 +93,9 @@ public class ViewController {
         model.addAttribute("username", mr.getLoggedUsername());
         model.addAttribute("artists", mr.getArtists());
         model.addAttribute("subscriptions", mr.getSubscriptionsByEmail());
+        model.addAttribute("artistImg", mr.getArtistImg(mr.getSubscriptionsByEmail()));
+        model.addAttribute("queryResults", songs);
+        model.addAttribute("queryImg", mr.getArtistImg(songs));
 
         if (songs.size() == 0) {
 

@@ -1,15 +1,20 @@
 package com.cca2.musiclibrary;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.Collator;
 
 public class MusicLibrary {
 
     DatabaseController dbc;
     User loggedUser;
+    S3Controller s3c;
 
     /*
      * 
@@ -146,7 +151,7 @@ public class MusicLibrary {
         List<Song> songs = dbc.getSubscriptionsByEmail(loggedUser.getEmail());
 
         for (Song song : songs) {
-            changeImgURL(song);
+            // changeImgURL(song);
         }
 
         return songs;
@@ -171,6 +176,44 @@ public class MusicLibrary {
         String imageName = song.getImgUrl().substring(87, song.getImgUrl().length());
 
         song.setImgUrl(urlPrefix + imageName);
+    }
+
+    public List<String> getArtistImg(List<Song> subscriptionsByEmail) {
+
+        List<String> list = new ArrayList<String>();
+
+        s3c = new S3Controller();
+        String bucketName = "cca2.artists";
+
+        for (Song song : subscriptionsByEmail) {
+
+            String imageName = song.getImgUrl().substring(87, song.getImgUrl().length());
+            try {
+                list.add(convertIStoBase64(s3c.getStream(bucketName, imageName)));
+            } catch (IOException e) {
+
+            }
+        }
+
+        return list;
+    }
+
+    private String convertIStoBase64(InputStream inputStream) throws IOException {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        byte[] imageBytes = outputStream.toByteArray();
+
+        // Encode the byte array to Base64
+        String base64Encoded = Base64.getEncoder().encodeToString(imageBytes);
+
+        // Return the Base64-encoded string
+        return base64Encoded;
     }
 
 }
