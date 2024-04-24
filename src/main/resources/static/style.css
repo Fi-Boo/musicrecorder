@@ -1,0 +1,126 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    scroll-behavior: smooth;
+    overflow-x: scroll;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.loginContainer, .registerContainer, .mainContainer {
+    border: 1px solid grey;
+    width: 50rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgrey;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+
+section {
+    border: 1px solid black;
+    width: 90%;
+    margin: 1rem;;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: silver;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.errorMsg, .formGroup, .loginForm input, .registerForm input, .queryForm input, .queryForm select, .btnPrimary {
+    height: 2rem;
+    width: 20rem;
+    text-align: center;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    
+}
+
+.queryForm select {
+    width: 20.5rem;
+}
+
+.btnPrimary {
+    font-size: 1.5rem;
+    width: 10rem;
+    margin: 1rem 0 0.5rem;
+
+}
+
+.songBox {
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    margin: 1rem;
+    width: 95%;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+    grid-template-areas: 
+        "img title title  year btn"
+        "img artist artist . btn"
+        "img url url url .";
+}
+
+.artistImg {
+    grid-area: img;
+    width: 60px;
+    height: 60px;
+}
+
+.songTitle {
+    grid-area: title;
+}
+
+.songYear {
+    grid-area: year;
+}
+
+.songArtist {
+    grid-area: artist;
+}
+
+.songURL {
+    grid-area: url;
+}
+
+.songBtn {
+    grid-area: btn;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.sresults {
+    width: 95%;
+    text-align: center;
+    margin: 1rem 1rem 0;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+    border-radius: 10%;
+}
+
+.artistImg img {
+    height: 60px;
+    width: 60px;
+    border-radius: 10%;
+}
