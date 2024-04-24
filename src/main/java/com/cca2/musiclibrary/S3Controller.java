@@ -1,12 +1,13 @@
 package com.cca2.musiclibrary;
 
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,11 +16,17 @@ public class S3Controller {
 
     private final AmazonS3 s3Client;
 
+    String accesskey = "AKIAW3MEABS7NBPKBZEW";
+    String secretkey = "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";
+
     public S3Controller() {
+
+        BasicAWSCredentials credentials = new BasicAWSCredentials(accesskey, secretkey);
         // Initialize the Amazon S3 client
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(Regions.US_EAST_1)
-                .withCredentials(new ProfileCredentialsProvider())
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                // .withCredentials(new ProfileCredentialsProvider())
                 .build();
 
     }
