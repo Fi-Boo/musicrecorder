@@ -97,10 +97,12 @@ public class ViewController {
 
             String errorMsg = "No result is retrieved. Please query again";
             model.addAttribute("errorMsg", errorMsg);
+            System.out.println("no results");
 
         } else {
 
             model.addAttribute("queryResults", songs);
+            System.out.println("results");
         }
 
         return "main";

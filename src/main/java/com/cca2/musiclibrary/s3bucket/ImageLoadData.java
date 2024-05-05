@@ -45,7 +45,7 @@ public class ImageLoadData {
         String key = imageUrl.substring(87, imageUrl.length());
 
         try {
-            // This code expects that you have AWS credentials set up per:
+
             // https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(clientRegion)
